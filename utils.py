@@ -27,15 +27,18 @@ def calculate_nextDirection(laser_direction, mirror_status):
     
     elif laser_direction == UP :
         if mirror_status == MIRROR_1:
-            next_direction== LEFT
+            next_direction= LEFT
         else:
-            next_direction == RIGHT
+            next_direction = RIGHT
     
+
     elif laser_direction == DOWN:
         if mirror_status == MIRROR_1:
-            next_direction == RIGHT
+            next_direction = RIGHT
         else:
-            next_direction == LEFT
+            next_direction = LEFT
+    
+
     
     return next_direction
 
