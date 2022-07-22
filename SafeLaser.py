@@ -20,8 +20,6 @@ class SafeLaser:
             \ = MIRROR_1 = 1 
         """
 
-
-
         self.row = row_r
         self.col = col_c
         self.mirror_0 = mirror_m
@@ -47,9 +45,6 @@ class SafeLaser:
 
 
     def laser_travelForward(self):
-        
-        
-      
 
         ## initially laser start from 1,0 with the right direction
         laser_obj = Laser()
@@ -83,15 +78,15 @@ class SafeLaser:
                 
                 new_direction = calculate_nextDirection(laser_beam_trace.current_direction, mirror_orientation)
                 laser_beam_trace.update_Current_direction(new_direction)
-                print("#### new direction : ",new_direction)
+                print("horizontal_lines : ",laser_beam_trace.horizontal_lines)
+                print("veticle_lines : ",laser_beam_trace.vertical_lines)
+                print("New direction : ",new_direction)
                 print(".........................................................")
         
         
         return done, laser_beam_trace
 
     
-
-
     def insert_range(self, list_mirrors, end):
         list_mirrors = [item for item in list_mirrors]
         list_mirrors.insert(0, (0, None))
@@ -144,6 +139,7 @@ class SafeLaser:
             else:
                 # laser leave grid.
                 next_point = [current_point_trace[0],self.col]
+            laser_obj.add_horizontal_line([current_point_trace,next_point])
         
         else:
             if rows_with_mirrors is not None:
@@ -161,6 +157,8 @@ class SafeLaser:
             else:
                 ## Laser leave grid
                 next_point =[self.row, current_point_trace[1]]
+
+            laser_obj.add_vertical_line([current_point_trace,next_point])
 
         print("mirror_orientation : ",mirror_orientation)
         print("cur direction : ",laser_obj.current_direction)
