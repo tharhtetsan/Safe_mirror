@@ -5,7 +5,7 @@ input_path = "input.txt"
 
 input_data = read_input(input_path)
 
-#print(input_data)
+#print(len(input_data))
 
 
 def place_input_data(input_data):
@@ -21,7 +21,7 @@ def place_input_data(input_data):
             input_index = 0
 
             safe_obj = SafeLaser(row_r=row, col_c= col,mirror_m=m,mirror_n= n)
- 
+            Safe_obj_list.append(safe_obj)
 
         else:
             row,col = cur_line_data
@@ -46,13 +46,15 @@ def place_input_data(input_data):
             
             input_index = input_index+1
 
-        print(safe_obj.row_mirror_positions)
-        print(safe_obj.col_mirror_positions)
-        print("##################################")
-        Safe_obj_list.append(safe_obj)
+        #print(safe_obj.row_mirror_positions)
+        #print(safe_obj.col_mirror_positions)
+        #("##################################")
+        
     return Safe_obj_list
 
 
 Safe_obj_list = place_input_data(input_data)
-Safe_obj  = Safe_obj_list[0]
-result = Safe_obj.solve()
+#print(len(Safe_obj_list))
+for Safe_obj in Safe_obj_list:
+    result = Safe_obj.solve()
+    print(result)

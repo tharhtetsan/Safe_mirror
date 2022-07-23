@@ -1,9 +1,9 @@
 from ast import Pass
-from turtle import right
+from turtle import backward, right
 from Laser import Laser
 from constants import *
 import operator
-
+from binary_search_tree import *
 from utils import run_binary_search
 from utils import calculate_nextDirection
 
@@ -27,36 +27,182 @@ class SafeLaser:
 
         self.row_mirror_positions = {}
         self.col_mirror_positions = {}
-
-        self.init_direction = RIGHT
-        self.start_point = [1,0]
-        self.end_point = [self.row,self.col+1]
+        self.bst = BinarySearchTree()
 
 
-    
+    def compute_intersections(self, events):
+        """Compute intersection points.
+
+        Args:
+            events (list): list of events to process.
+
+        Returns:
+            intersections (list): list of intersection points.
+
+        """
+        intersections = []
+        for event in events:
+            if type(event) is not tuple:
+                x, y, event_flag = event
+                if event_flag == 0:
+                    self.bst[x] = x
+                elif event_flag == 1:
+                    try:
+                        del self.bst[x]
+                    except:
+                        print("Degeneracy case. Just overlapping segments, don't worry!")
+            else:
+                x_range, y = event
+                for i in range(x_range[0] + 1, x_range[1]):
+                    if self.bst[i] is not None:
+                        intersections.append((self.bst[i], y))
+
+        return intersections   
+
+
+    def create_events_queue(self, horizontal_segments, vertical_segments):
+        """Create a queue of events to process.
+
+        Args:
+            horizontal_segments (list): list of horizontal segments.
+            vertical_segments (list): list of vertical segments.
+
+        Returns:
+            events (list): list of events to process.
+
+        """
+        events = []
+        for segment in horizontal_segments:
+            start, stop = segment
+
+            # Markers for start and stop events.
+            start.append(0)
+            stop.append(1)
+
+            events.append(start)
+            events.append(stop)
+
+        for segment in vertical_segments:
+            events.append(segment)
+
+        events.sort(key=operator.itemgetter(1)) # O(N * log(N)).
+
+        return events
+
     def searchSafe(self):
         Pass
 
 
     def solve(self):
-        done, forward_trace = self.laser_travelForward()
+        done, forward_trace = self.laser_Forward_travel()
+        if done:    
+            return 0
+        else:
+            #print("...........................................................................................")
+            back_done, backward_trace = self.laser_Backward_travel()
 
-        print("done : ",done)
+
+        intersection_points, lexi_candidates = [], []
 
 
-    def laser_travelForward(self):
-
-        ## initially laser start from 1,0 with the right direction
-        laser_obj = Laser()
-        laser_obj.update_lastVisited_point(last_visitedPoint=self.start_point)
-        laser_obj.update_Current_direction(laser_direction=self.init_direction)
+        events = self.create_events_queue(forward_trace.horizontal_lines,
+                                          backward_trace.vertical_lines)
         
+        intersections = self.compute_intersections(events)
+
+
+        if len(intersections) > 0:
+            lexi_candidates.append(intersections[0])
+        intersection_points.extend(intersections)
+
+
        
+        #print()
+        #print(events)
+        #print("intersections_ f_h and b_V : ",intersections)
+        #print()
+ 
+        
+        if len(intersections) > 0:
+            lexi_candidates.append(intersections[0])
+        intersection_points.extend(intersections)
 
-        done,forward_trace = self.run_trace(laser_obj,self.end_point)
+        events = self.create_events_queue(backward_trace.horizontal_lines,
+                                          forward_trace.vertical_lines)
+        intersections = self.compute_intersections(events)
+        #print()
+        #print(events)
+        #print("intersections_ f_v and b_h : ",intersections)
+        #print()
 
-        print("laser_travelForward",done)
 
+        if len(intersections) > 0:
+            lexi_candidates.append(intersections[0])
+        intersection_points.extend(intersections)
+
+        n_intersections = len(intersection_points)
+        #print("lexi_candidates", lexi_candidates)
+        #print("n_intersections : ",n_intersections)
+
+        lexi_candidates = list(set(lexi_candidates))
+        if n_intersections > 0:
+            if len(lexi_candidates) > 1:
+                lexi_first = self.choose_closedPoint_forward_trace(lexi_candidates)
+                #print("lexi_first : ",lexi_first) 
+            else:
+                lexi_first = lexi_candidates[0]
+        else:
+            return "impossible"
+
+        result = str(n_intersections) + " " + str(lexi_first[0]) + \
+            " " + str(lexi_first[1])
+        return result
+        #print("lexi_first : ",lexi_first) 
+        #print("done : ",done)
+
+    def choose_closedPoint_forward_trace(self, lexi_candidates):
+
+        #print("I good", lexi_candidates)
+        point_a, point_b = lexi_candidates
+
+        if (point_a[0] < point_b[0]):
+            return point_a
+        elif (point_a[0] == point_b[0]):
+            if (point_a[1] < point_b[1]):
+                return point_a
+            else:
+                return point_b
+        else:
+            return point_b
+
+
+    def laser_Backward_travel(self):
+        start_point = [self.row,self.col+1]
+        end_point = [1,0]
+        init_direction = LEFT
+        ## initially laser start from row,col+1 with the left direction
+        backward_laser_obj = Laser()
+        backward_laser_obj.update_lastVisited_point(last_visitedPoint=start_point)
+        backward_laser_obj.update_Current_direction(laser_direction=init_direction)
+        
+        done,backward_trace = self.run_trace(backward_laser_obj,end_point)
+        return done, backward_trace
+
+
+
+
+    def laser_Forward_travel(self):
+        start_point = [1,0]
+        end_point = [self.row,self.col+1]
+        init_direction = RIGHT
+        ## initially laser start from 1,0 with the right direction
+        forward_laser_obj = Laser()
+        forward_laser_obj.update_lastVisited_point(last_visitedPoint=start_point)
+        forward_laser_obj.update_Current_direction(laser_direction=init_direction)
+        
+        done,forward_trace = self.run_trace(forward_laser_obj,end_point)
+
+        #print("laser_travelForward status : ",done)
         return  done,forward_trace
     
 
@@ -66,6 +212,8 @@ class SafeLaser:
         while True:
             next_trace, mirror_orientation,laser_beam_trace = self.get_next_point(laser_beam_trace)
             laser_beam_trace.update_lastVisited_point(next_trace)
+            #print("horizontal_lines : ",laser_beam_trace.horizontal_lines)
+            #print("veticle_lines : ",laser_beam_trace.vertical_lines)
             
             if next_trace == end:
                 done = True
@@ -78,10 +226,9 @@ class SafeLaser:
                 
                 new_direction = calculate_nextDirection(laser_beam_trace.current_direction, mirror_orientation)
                 laser_beam_trace.update_Current_direction(new_direction)
-                print("horizontal_lines : ",laser_beam_trace.horizontal_lines)
-                print("veticle_lines : ",laser_beam_trace.vertical_lines)
-                print("New direction : ",new_direction)
-                print(".........................................................")
+                
+                #print("New direction : ",new_direction)
+                #print(".........................................................")
         
         
         return done, laser_beam_trace
@@ -109,11 +256,11 @@ class SafeLaser:
         rows_with_mirrors.sort(key=operator.itemgetter(0))
         rows_with_mirrors = self.insert_range(rows_with_mirrors, self.row + 1)
         
-        print("current_point_trace : ",current_point_trace)
-        print("col_mirror_positions : ",self.col_mirror_positions)
-        print("row_mirror_positions : ",self.row_mirror_positions)
-        print("cols_with_mirrors : ",cols_with_mirrors)
-        print("rows_with_mirrors : ",rows_with_mirrors)
+        #print("current_point_trace : ",current_point_trace)
+        #print("col_mirror_positions : ",self.col_mirror_positions)
+        #print("row_mirror_positions : ",self.row_mirror_positions)
+        #print("cols_with_mirrors : ",cols_with_mirrors)
+        #print("rows_with_mirrors : ",rows_with_mirrors)
 
 
         if (laser_obj.current_direction == LEFT ) or (laser_obj.current_direction == RIGHT):
@@ -121,7 +268,7 @@ class SafeLaser:
             if cols_with_mirrors is not None:
                 cols_with_mirrors_position =[ cur_col for cur_col,cur_mirror in cols_with_mirrors]
                 nearest_mirror_interval =  run_binary_search(cols_with_mirrors_position,current_point_trace[1])
-                print("closest_mirror_interval : ",nearest_mirror_interval)
+                #print("closest_mirror_interval : ",nearest_mirror_interval)
 
                 if laser_obj.current_direction == RIGHT:
                     # go to right direction
@@ -133,8 +280,8 @@ class SafeLaser:
                     # go to left direction
                     next_point = [current_point_trace[0],cols_with_mirrors_position[nearest_mirror_interval-1]]
                     mirror_orientation =  cols_with_mirrors[nearest_mirror_interval-1][1]
-                    print(nearest_mirror_interval-1)
-                    print("left next point",cols_with_mirrors)
+                    #print(nearest_mirror_interval-1)
+                    #print("left next point",cols_with_mirrors)
             
             else:
                 # laser leave grid.
@@ -160,9 +307,9 @@ class SafeLaser:
 
             laser_obj.add_vertical_line([current_point_trace,next_point])
 
-        print("mirror_orientation : ",mirror_orientation)
-        print("cur direction : ",laser_obj.current_direction)
-        print("next_point : ",next_point)
+        #print("mirror_orientation : ",mirror_orientation)
+        #print("cur direction : ",laser_obj.current_direction)
+        #print("next_point : ",next_point)
        
         return next_point,mirror_orientation,laser_obj         
                    
