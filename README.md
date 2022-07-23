@@ -38,7 +38,7 @@ To solve this problem, we need to divide the problem into several parts.
 
 - To check this problem we need make the laser beam to **travel forward** in code `LaserWork.Laser.laserBeam_travel_forward` (Left to Right). 
 
-  ![](imgs/forward_detect.png)
+  ![TharHtetSan-forward1](imgs/forward-detect.PNG)
 
 - But the grids input variables are `r, c, m` and theses can be `n (1 ≤ r, c ≤ 1000000 and 0 ≤ m, n ≤ 200000)`. So if we just move 1 grid cell at a time, it will take more processing time. So we need to record the input pairs (row, col and mirror status) and make sure to only travel in inputs pairs.  For better understanding please see the following steps:
 
