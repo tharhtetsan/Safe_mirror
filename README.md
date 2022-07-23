@@ -1,10 +1,10 @@
-# Mirrors (Code Assignment)
+# Mirrors (Code Assignment from Ensign )
 
 ### 1. Problem
 
 Safe Ltd. is a company that manufactures high-quality safes. Its latest invention is an optical closure  mechanism that uses a laser beam passing through a rectangular grid with several mirrors.
 
-![](https://github.com/tharhtetsan/Safe_bet/blob/main/imgs/problem.png)
+![TharHtetSan-laserSafe](imgs/problem.png)
 
 When the laser is activated, a beam enters the top row of the grid horizontally from the left. The beam  is reflected by every mirror that it hits. Each mirror has a `45` degree diagonal orientation, either `/` or `\`. If  the beam exits the bottom row of the grid horizontally to the right, it is detected and the safe opens (see  the left side of the figure above). Otherwise the safe remains closed and an alarm is raised. 
 
@@ -30,7 +30,7 @@ For each test case, display its case number followed by:
 
 
 
-### Problem Analysis to solve
+### Problem Analysis, Approach and Implementation
 
 To solve this problem, we need to divide the problem into several parts.
 
@@ -38,19 +38,19 @@ To solve this problem, we need to divide the problem into several parts.
 
 - To check this problem we need make the laser beam to **travel forward** in code `LaserWork.Laser.laserBeam_travel_forward` (Left to Right). 
 
-  <img src="C:\Users\tharh\AppData\Roaming\Typora\typora-user-images\image-20220723173045932.png" alt="image-20220723173045932" style="zoom:80%;" />
+  ![TharHtetSan-forward_1](imgs/forward_detect.png)
 
 - But the grids input variables are `r, c, m` and theses can be `n (1 ≤ r, c ≤ 1000000 and 0 ≤ m, n ≤ 200000)`. So if we just move 1 grid cell at a time, it will take more processing time. So we need to record the input pairs (row, col and mirror status) and make sure to only travel in inputs pairs.  For better understanding please see the following steps:
 
   
 
-  <img src="D:\interview\images\forward_1.PNG" style="zoom:80%;" />
+  ![TharHtetSan-forward_2](imgs/forward_1.png)
 
- <img src="D:\interview\images\forward_2.PNG" style="zoom:80%;" />
+
 
 - **In Forward travel step-3**: the laser beam pass to the **end point (col)** without using all of the mirrors from inputs. This define as **alarm raised** and we need move to next process.
 
-<img src="D:\interview\images\forward_3.PNG" style="zoom:80%;" />
+![TharHtetSan-forward_3](imgs/forward_3.png)
 
 
 
@@ -60,16 +60,29 @@ To solve this problem, we need to divide the problem into several parts.
 
 - ​	To know the mirrors locations, we need make **travel backward** to the crossing places. We recorded need `horizonal` and `vertical` lines from **forward travel**. And also we need recorded horizonal and vertical lines from **backward travel**.
 
-<img src="D:\interview\images\forward_and_backward.PNG" style="zoom:80%;" />
+![TharHtetSan-forward_and_backward](imgs/forward_and_backward.png)
 
 - Only `horizonal lines` can cross `vertical lines`. So I searched intersection points between **horizonal-lines-from-backward-travel** and **vertical-lines-from-forward-travel** . And also searched  intersection points between **horizonal-lines-from-forward-travel** and **vertical-lines-from-backward-travel** . As a result is show below:
 
-<img src="D:\interview\images\intersection.PNG" style="zoom:80%;" />
+![TharHtetSan-intersection](imgs/intersection.png)
 
 - For worst case, there can be a lot of intersection points (`k`). If we search the mirror location `(r,c)` in all these intersections, can it be take a lot of times. 
 
-<img src="D:\interview\images\worst_case.PNG" style="zoom:80%;" />
+![TharHtetSan-worst_case](imgs/worst_case.png)
 
 - To avoid time consuming and search **"\\"** mirror location with we need to used **binary search tree** with **row** key.
 
-<img src="D:\interview\images\worst_case_optimized.PNG" style="zoom:80%;" />
+![TharHtetSan-worstCaseOptimize](imgs/worst_case_optimized.png)
+
+#### How to Run
+
+- add input data to "input.txt" and save .
+
+- `python main.py` 
+
+
+
+#### References:
+
+[Binary Search Tree](http://interactivepython.org/runestone/static/pythonds/Trees/SearchTreeImplementation.html.
+) 
