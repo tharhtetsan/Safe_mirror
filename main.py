@@ -1,5 +1,5 @@
 from utils import *
-from SafeLaser import SafeLaser
+from LaserWork import LaserWork
 
 input_path = "input.txt"
 
@@ -20,8 +20,8 @@ def place_input_data(input_data):
             row,col,m,n = cur_line_data
             input_index = 0
 
-            safe_obj = SafeLaser(row_r=row, col_c= col,mirror_m=m,mirror_n= n)
-            Safe_obj_list.append(safe_obj)
+            laser_obj = LaserWork(row_r=row, col_c= col,mirror_m=m,mirror_n= n)
+            Safe_obj_list.append(laser_obj)
 
         else:
             row,col = cur_line_data
@@ -33,13 +33,13 @@ def place_input_data(input_data):
                 row_mirror = (col,MIRROR_1)
                 col_mirror = (row,MIRROR_1)
 
-            if safe_obj.row_mirror_positions.get(row) is None:
-                safe_obj.row_mirror_positions[row] = []
-            safe_obj.row_mirror_positions[row].append(row_mirror)
+            if laser_obj.row_mirror_positions.get(row) is None:
+                laser_obj.row_mirror_positions[row] = []
+            laser_obj.row_mirror_positions[row].append(row_mirror)
                 
-            if safe_obj.col_mirror_positions.get(col) is None:
-                safe_obj.col_mirror_positions[col] = []
-            safe_obj.col_mirror_positions[col].append(col_mirror)
+            if laser_obj.col_mirror_positions.get(col) is None:
+                laser_obj.col_mirror_positions[col] = []
+            laser_obj.col_mirror_positions[col].append(col_mirror)
 
 
            
