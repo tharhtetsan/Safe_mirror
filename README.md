@@ -38,19 +38,19 @@ To solve this problem, we need to divide the problem into several parts.
 
 - To check this problem we need make the laser beam to **travel forward** in code `LaserWork.Laser.laserBeam_travel_forward` (Left to Right). 
 
-  ![TharHtetSan-forward1](imgs/forward-detect.PNG)
+  ![TharHtetSan-forward1](imgs\forward_detect.png)
 
 - But the grids input variables are `r, c, m` and theses can be `n (1 ≤ r, c ≤ 1000000 and 0 ≤ m, n ≤ 200000)`. So if we just move 1 grid cell at a time, it will take more processing time. So we need to record the input pairs (row, col and mirror status) and make sure to only travel in inputs pairs.  For better understanding please see the following steps:
 
   
 
-  ![TharHtetSan-forward2](imgs/forward_1.png)
+  ![TharHtetSan-forward2](imgs/forward_1.PNG)
 
 
 
 - **In Forward travel step-3**: the laser beam pass to the **end point (col)** without using all of the mirrors from inputs. This define as **alarm raised** and we need move to next process.
 
-![TharHtetSan-forward3](imgs/forward_3.png)
+![TharHtetSan-forward3](imgs/forward_3.PNG)
 
 
 
@@ -60,19 +60,19 @@ To solve this problem, we need to divide the problem into several parts.
 
 - ​	To know the mirrors locations, we need make **travel backward** to the crossing places. We recorded need `horizonal` and `vertical` lines from **forward travel**. And also we need recorded horizonal and vertical lines from **backward travel**.
 
-![TharHtetSan-forward-and-backward](imgs/forward_and_backward.png)
+![TharHtetSan-forward-and-backward](imgs/forward_and_backward.PNG)
 
 - Only `horizonal lines` can cross `vertical lines`. So I searched intersection points between **horizonal-lines-from-backward-travel** and **vertical-lines-from-forward-travel** . And also searched  intersection points between **horizonal-lines-from-forward-travel** and **vertical-lines-from-backward-travel** . As a result is show below:
 
-![TharHtetSan-intersection](imgs/intersection.png)
+![TharHtetSan-intersection](imgs/intersection.PNG)
 
 - For worst case, there can be a lot of intersection points (`k`). If we search the mirror location `(r,c)` in all these intersections, can it be take a lot of times. 
 
-![TharHtetSan-worst_case](imgs/worst_case.png)
+![TharHtetSan-worst_case](imgs/worst_case.PNG)
 
 - To avoid time consuming and search **"\\"** mirror location with we need to used **binary search tree** with **row** key.
 
-![TharHtetSan-worstCaseOptimize](imgs/worst_case_optimized.png)
+![TharHtetSan-worstCaseOptimize](imgs/worst_case_optimized.PNG)
 
 #### How to Run
 
