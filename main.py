@@ -1,5 +1,8 @@
 from utils import *
 from LaserWork import LaserWork
+import sys
+sys.setrecursionlimit(5000)
+
 
 input_path = "input.txt"
 
@@ -9,10 +12,8 @@ input_data = read_input(input_path)
 
 
 def place_input_data(input_data):
-    
 
     Safe_obj_list = []
-
     input_index = 0
     for cur_line in input_data:
         cur_line_data = [int(x) for x in cur_line.split(' ')]
@@ -53,8 +54,9 @@ def place_input_data(input_data):
     return Safe_obj_list
 
 
-Safe_obj_list = place_input_data(input_data)
+safe_obj_list = place_input_data(input_data)
 #print(len(Safe_obj_list))
-for Safe_obj in Safe_obj_list:
-    result = Safe_obj.solve()
-    print(result)
+for i,safe_obj in enumerate(safe_obj_list):
+    result = safe_obj.CheckLaser()
+    str_out = "Case {}: {}".format(str(i+1),result)
+    print(str_out)

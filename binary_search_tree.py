@@ -408,9 +408,9 @@ class TreeNode:
                     self.parent.right_child = self.right_child
                 self.right_child.parent = self.parent
 
-
+"""
 def test_tree():
-    """Test."""
+    Test.
     tree = BinarySearchTree()
     tree[3] = 'a'
     tree[5] = 'b'
@@ -427,7 +427,7 @@ def test_tree():
 
     for item in tree:
         print(item)
-
+"""
 
 # if __name__ == "__main__":
 #     test_tree()

@@ -38,8 +38,6 @@ def calculate_nextDirection(laser_direction, mirror_status):
         else:
             next_direction = LEFT
     
-
-    
     return next_direction
 
 

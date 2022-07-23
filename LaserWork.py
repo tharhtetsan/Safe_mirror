@@ -30,49 +30,28 @@ class LaserWork:
 
 
     def compute_intersections(self, events):
-        """Compute intersection points.
-
-        Args:
-            events (list): list of events to process.
-
-        Returns:
-            intersections (list): list of intersection points.
-
-        """
         intersections = []
-        for event in events:
-            if type(event) is not tuple:
-                x, y, event_flag = event
-                if event_flag == 0:
-                    self.bst[x] = x
-                    #print("x=",x)
-                elif event_flag == 1:
-                    try:
+        try:
+            for event in events:
+                if type(event) is not tuple:
+                    x, y, event_flag = event
+                    if event_flag == 0:
+                        self.bst[x] = x
+                    elif event_flag == 1:
                         del self.bst[x]
-                    except:
-                        print("Degeneracy case. Just overlapping segments, don't worry!")
-            else:
-                x_range, y = event
-                for i in range(x_range[0] + 1, x_range[1]):
-                    #print("i = ",i)
-                    #print("bst = ",self.bst[i])
-                    if self.bst[i] is not None:
-                        intersections.append((self.bst[i], y))
+              
+                else:
+                    x_range, y = event
+                    for i in range(x_range[0] + 1, x_range[1]):
+                        if self.bst[i] is not None:
+                            intersections.append((self.bst[i], y))
+        except :
+                print("somethings wrong")
 
         return intersections   
 
 
     def create_events_queue(self, horizontal_segments, vertical_segments):
-        """Create a queue of events to process.
-
-        Args:
-            horizontal_segments (list): list of horizontal segments.
-            vertical_segments (list): list of vertical segments.
-
-        Returns:
-            events (list): list of events to process.
-
-        """
         events = []
         for segment in horizontal_segments:
             start, stop = segment
@@ -87,22 +66,18 @@ class LaserWork:
         for segment in vertical_segments:
             events.append(segment)
 
-        events.sort(key=operator.itemgetter(1)) # O(N * log(N)).
+        events.sort(key=operator.itemgetter(1)) 
 
         return events
 
-    def searchSafe(self):
-        Pass
 
-
-    def solve(self):
+    def CheckLaser(self):
         done, forward_trace = self.laserBeam_travel_forward()
         if done:    
             return 0
         else:
-            print("...........................................................................................")
             back_done, backward_trace = self.laser_Backward_travel()
-
+            
 
         intersection_points, lexi_candidates = [], []
 
@@ -111,15 +86,14 @@ class LaserWork:
                                           backward_trace.vertical_lines)
         
         intersections = self.compute_intersections(events)
-
-
+        
         if len(intersections) > 0:
             lexi_candidates.append(intersections[0])
         intersection_points.extend(intersections)
        
         #print()
-        print(events)
-        print("intersections_ f_h and b_V : ",intersections)
+        #print(events)
+        #print("intersections_ f_h and b_V : ",intersections)
         #print()
  
     
@@ -128,8 +102,8 @@ class LaserWork:
                                           forward_trace.vertical_lines)
         intersections = self.compute_intersections(events)
         #print()
-        print(events)
-        print("intersections_ f_v and b_h : ",intersections)
+        #print(events)
+        #print("intersections_ f_v and b_h : ",intersections)
         #print()
 
 
@@ -140,26 +114,21 @@ class LaserWork:
         n_intersections = len(intersection_points)
         #print("lexi_candidates", lexi_candidates)
         #print("n_intersections : ",n_intersections)
-
-        #lexi_candidates = list(set(lexi_candidates))
+        lexi_first = None
         if n_intersections > 0:
             if len(lexi_candidates) > 1:
                 lexi_first = self.choose_closedPoint_forward_trace(lexi_candidates)
-                #print("lexi_first : ",lexi_first) 
+                
             else:
                 lexi_first = lexi_candidates[0]
         else:
             return "impossible"
 
-        result = str(n_intersections) + " " + str(lexi_first[0]) + \
-            " " + str(lexi_first[1])
+        result = str(n_intersections) + " " + str(lexi_first[0]) +" " + str(lexi_first[1])
         return result
-        #print("lexi_first : ",lexi_first) 
         #print("done : ",done)
 
     def choose_closedPoint_forward_trace(self, lexi_candidates):
-
-        #print("I good", lexi_candidates)
         point_a, point_b = lexi_candidates
 
         if (point_a[0] < point_b[0]):
@@ -226,8 +195,7 @@ class LaserWork:
                 
                 #print("New direction : ",new_direction)
                 #print(".........................................................")
-        
-        
+
         return done, laser_beam_trace
 
     
