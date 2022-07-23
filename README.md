@@ -4,7 +4,7 @@
 
 Safe Ltd. is a company that manufactures high-quality safes. Its latest invention is an optical closure  mechanism that uses a laser beam passing through a rectangular grid with several mirrors.
 
-
+![](https://github.com/tharhtetsan/Safe_bet/blob/main/imgs/problem.png)
 
 When the laser is activated, a beam enters the top row of the grid horizontally from the left. The beam  is reflected by every mirror that it hits. Each mirror has a `45` degree diagonal orientation, either `/` or `\`. If  the beam exits the bottom row of the grid horizontally to the right, it is detected and the safe opens (see  the left side of the figure above). Otherwise the safe remains closed and an alarm is raised. 
 
