@@ -37,12 +37,21 @@ class LaserWork:
                     x, y, event_flag = event
                     if event_flag == 0:
                         self.bst[x] = x
+                        print("self.bst[x]=",self.bst[x],end=" ")
+                        print(x)
                     elif event_flag == 1:
                         del self.bst[x]
               
                 else:
                     x_range, y = event
+                    #for temp in self.bst:
+                    #    print(temp)
+                    #print()
                     for i in range(x_range[0] + 1, x_range[1]):
+                        print(i, end=" ")
+                        print(y, end=" ")
+                        print(" Tree : ",self.bst[i])
+                    
                         if self.bst[i] is not None:
                             intersections.append((self.bst[i], y))
         except :
@@ -93,7 +102,7 @@ class LaserWork:
        
         #print()
         #print(events)
-        #print("intersections_ f_h and b_V : ",intersections)
+        print("intersections_ f_h and b_V : ",intersections)
         #print()
  
     
@@ -103,7 +112,7 @@ class LaserWork:
         intersections = self.compute_intersections(events)
         #print()
         #print(events)
-        #print("intersections_ f_v and b_h : ",intersections)
+        print("intersections_ f_v and b_h : ",intersections)
         #print()
 
 

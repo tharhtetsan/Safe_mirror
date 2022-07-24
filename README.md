@@ -38,19 +38,19 @@ To solve this problem, we need to divide the problem into several parts.
 
 - To check this problem we need make the laser beam to **travel forward** in code `LaserWork.Laser.laserBeam_travel_forward` (Left to Right). 
 
-  ![TharHtetSan-detect](imgs/forward_detect.PNG)
+  <img src="imgs/forward_detect.PNG" alt="TharHtetSan-detect" style="zoom: 80%;" />
 
 - But the grids input variables are `r, c, m` and theses can be `n (1 ≤ r, c ≤ 1000000 and 0 ≤ m, n ≤ 200000)`. So if we just move 1 grid cell at a time, it will take more processing time. So we need to record the input pairs (row, col and mirror status) and make sure to only travel in inputs pairs.  For better understanding please see the following steps:
 
-  ![TharHtetSan-forward1](imgs/forward_1.PNG)
+  <img src="imgs/forward_1.PNG" alt="TharHtetSan-forward1" style="zoom:80%;" />
 
-  ![TharHtetSan-forward2](imgs/forward_2.PNG)
+  <img src="imgs/forward_2.PNG" alt="TharHtetSan-forward2" style="zoom:80%;" />
 
 
 
 - **In Forward travel step-3**: the laser beam pass to the **end point (col)** without using all of the mirrors from inputs. This define as **alarm raised** and we need move to next process.
 
-![TharHtetSan-forward3](imgs/forward_3.PNG)
+<img src="imgs/forward_3.PNG" alt="TharHtetSan-forward3" style="zoom:80%;" />
 
 
 
@@ -60,19 +60,32 @@ To solve this problem, we need to divide the problem into several parts.
 
 - ​	To know the mirrors locations, we need make **travel backward** to the crossing places. We recorded need `horizonal` and `vertical` lines from **forward travel**. And also we need recorded horizonal and vertical lines from **backward travel**.
 
-![TharHtetSan-forward-and-backward](imgs/forward_and_backward.PNG)
+<img src="imgs/forward_and_backward.PNG" alt="TharHtetSan-forward-and-backward" style="zoom:80%;" />
 
 - Only `horizonal lines` can cross `vertical lines`. So I searched intersection points between **horizonal-lines-from-backward-travel** and **vertical-lines-from-forward-travel** . And also searched  intersection points between **horizonal-lines-from-forward-travel** and **vertical-lines-from-backward-travel** . As a result is show below:
 
-![TharHtetSan-intersection](imgs/intersection.PNG)
+<img src="imgs/intersection.PNG" alt="TharHtetSan-intersection" style="zoom:80%;" />
 
-- For worst case, there can be a lot of intersection points (`k`). If we search the mirror location `(r,c)` in all these intersections, can it be take a lot of times. 
+#### 3. Handling worst case and lexicographically smallest point
 
-![TharHtetSan-worst_case](imgs/worst_case.PNG)
+- Let's consider about the worst case as show below.
 
-- To avoid time consuming and search **"\\"** mirror location with we need to used **binary search tree** with **row** key.
+<img src="imgs/worst_case.PNG" alt="TharHtetSan-worst_case" style="zoom:80%;" />
 
-![TharHtetSan-worstCaseOptimize](imgs/worst_case_optimized.PNG)
+
+
+- In this case we need a lot comparison between `horizontal-backward` and `vertical-forward`. And also `horizontal-forward` and `vertical -backward` . If we search the intersections in all these, can it be take a lot of times. 
+
+- To avoid time consuming  we need to used some arrange tree algorithm. In here we use **binary search tree** with **row** key.<img src="imgs/worst_case_intersections.PNG" alt="TharHtetSan-worstCaseOptimize" style="zoom:80%;" />
+
+- According to problem, we should choose **(9,5)** with **"\\"mirror** .
+
+  <img src="imgs/worst_case_should.PNG" alt="TharHtetSan-worst_case_should" style="zoom:80%;" />
+
+- But according to the question. We have to choose lexicographically smallest **row** and **column** position. So that the result will be follow:
+  <img src="imgs/worst_case_happending.png" style="zoom:80%;" />
+
+
 
 #### How to Run
 

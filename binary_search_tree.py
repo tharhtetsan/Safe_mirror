@@ -408,26 +408,26 @@ class TreeNode:
                     self.parent.right_child = self.right_child
                 self.right_child.parent = self.parent
 
-"""
 def test_tree():
-    Test.
     tree = BinarySearchTree()
-    tree[3] = 'a'
-    tree[5] = 'b'
-    tree[6] = 'c'
+    tree[3] = 3
+    tree[5] = 5
+    tree[6] = 6
 
-    print(tree[5])
-    tree[5] = 'd'
-    print(tree[5])
+    #print(tree[5])
+    #tree[5] = 'd'
+    #print(tree[5])
 
-    print(len(tree))
-    del tree[5]
-    print(tree[6])
-    print(len(tree))
+    #print(len(tree))
+    #del tree[5]
+    #print(tree[6])
+    #print(len(tree))
 
     for item in tree:
         print(item)
-"""
+    
+    print("tree : ",tree[7])
+    print("tree : ",tree[3])
 
-# if __name__ == "__main__":
-#     test_tree()
+if __name__ == "__main__":
+    test_tree()
