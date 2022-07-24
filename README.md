@@ -75,14 +75,8 @@ To solve this problem, we need to divide the problem into several parts.
 
 
 - In this case we need a lot comparison between `horizontal-backward` and `vertical-forward`. And also `horizontal-forward` and `vertical -backward` . If we search the intersections in all these, can it be take a lot of times. 
-
 - To avoid time consuming  we need to used some arrange tree algorithm. In here we use **binary search tree** with **row** key.<img src="imgs/worst_case_intersections.PNG" alt="TharHtetSan-worstCaseOptimize" style="zoom:80%;" />
-
-- According to problem, we should choose **(9,5)** with **"\\"mirror** .
-
-  <img src="imgs/worst_case_should.PNG" alt="TharHtetSan-worst_case_should" style="zoom:80%;" />
-
-- But according to the question. We have to choose lexicographically smallest **row** and **column** position. So that the result will be follow:
+- But according to the question. We have to choose lexicographically smallest **row** and **column** position. So we choose **(1,5)** that the result will be follow:
   <img src="imgs/worst_case_happending.png" style="zoom:80%;" />
 
 
