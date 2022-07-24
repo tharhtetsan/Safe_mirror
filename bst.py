@@ -408,6 +408,8 @@ class TreeNode:
                     self.parent.right_child = self.right_child
                 self.right_child.parent = self.parent
 
+
+"""
 def test_tree():
     tree = BinarySearchTree()
     tree[3] = 3
@@ -431,3 +433,4 @@ def test_tree():
 
 if __name__ == "__main__":
     test_tree()
+"""

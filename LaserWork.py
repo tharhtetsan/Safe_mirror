@@ -3,7 +3,7 @@ from turtle import backward, right
 from Laser import Laser
 from constants import *
 import operator
-from binary_search_tree import *
+from bst import BinarySearchTree
 from utils import run_binary_search
 from utils import calculate_nextDirection
 
@@ -29,7 +29,7 @@ class LaserWork:
         self.bst = BinarySearchTree()
 
 
-    def compute_intersections(self, events):
+    def compute_LinesIntersections(self, events):
         intersections = []
         try:
             for event in events:
@@ -37,21 +37,12 @@ class LaserWork:
                     x, y, event_flag = event
                     if event_flag == 0:
                         self.bst[x] = x
-                        print("self.bst[x]=",self.bst[x],end=" ")
-                        print(x)
                     elif event_flag == 1:
                         del self.bst[x]
               
                 else:
                     x_range, y = event
-                    #for temp in self.bst:
-                    #    print(temp)
-                    #print()
                     for i in range(x_range[0] + 1, x_range[1]):
-                        print(i, end=" ")
-                        print(y, end=" ")
-                        print(" Tree : ",self.bst[i])
-                    
                         if self.bst[i] is not None:
                             intersections.append((self.bst[i], y))
         except :
@@ -94,7 +85,7 @@ class LaserWork:
         events = self.create_events_queue(forward_trace.horizontal_lines,
                                           backward_trace.vertical_lines)
         
-        intersections = self.compute_intersections(events)
+        intersections = self.compute_LinesIntersections(events)
         
         if len(intersections) > 0:
             lexi_candidates.append(intersections[0])
@@ -102,17 +93,17 @@ class LaserWork:
        
         #print()
         #print(events)
-        print("intersections_ f_h and b_V : ",intersections)
+        #print("intersections_ f_h and b_V : ",intersections)
         #print()
  
     
 
         events = self.create_events_queue(backward_trace.horizontal_lines,
                                           forward_trace.vertical_lines)
-        intersections = self.compute_intersections(events)
+        intersections = self.compute_LinesIntersections(events)
         #print()
         #print(events)
-        print("intersections_ f_v and b_h : ",intersections)
+        #print("intersections_ f_v and b_h : ",intersections)
         #print()
 
 
@@ -160,7 +151,7 @@ class LaserWork:
         backward_laser_obj.update_lastVisited_point(last_visitedPoint=start_point)
         backward_laser_obj.update_Current_direction(laser_direction=init_direction)
         
-        done,backward_trace = self.run_trace(backward_laser_obj,end_point)
+        done,backward_trace = self.travel_the_grip(backward_laser_obj,end_point)
         return done, backward_trace
 
 
@@ -175,14 +166,14 @@ class LaserWork:
         forward_laser_obj.update_lastVisited_point(last_visitedPoint=start_point)
         forward_laser_obj.update_Current_direction(laser_direction=init_direction)
         
-        done,forward_trace = self.run_trace(forward_laser_obj,end_point)
+        done,forward_trace = self.travel_the_grip(forward_laser_obj,end_point)
 
         #print("laser_travelForward status : ",done)
         return  done,forward_trace
     
 
     
-    def  run_trace(self, laser_beam_trace,end):
+    def  travel_the_grip(self, laser_beam_trace,end):
         done = False
         while True:
             next_trace, mirror_orientation,laser_beam_trace = self.get_next_point(laser_beam_trace)
@@ -285,5 +276,5 @@ class LaserWork:
         #print("cur direction : ",laser_obj.current_direction)
         #print("next_point : ",next_point)
        
-        return next_point,mirror_orientation,laser_obj         
+        return next_point,mirror_orientation,laser_obj 
                    
