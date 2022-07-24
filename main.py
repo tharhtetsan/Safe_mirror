@@ -1,7 +1,10 @@
 from utils import *
 from LaserWork import LaserWork
+
+#Default python recursionlimit is 1000
+#M,N can be max of 200000, so we need to change 
 import sys
-sys.setrecursionlimit(5000)
+sys.setrecursionlimit(200000)
 
 
 input_path = "input.txt"

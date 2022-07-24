@@ -46,8 +46,7 @@ class LaserWork:
                         if self.bst[i] is not None:
                             intersections.append((self.bst[i], y))
         except :
-                print("somethings wrong")
-
+                Pass
         return intersections   
 
 
