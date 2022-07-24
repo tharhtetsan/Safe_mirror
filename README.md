@@ -48,7 +48,7 @@ To solve this problem, we need to divide the problem into several parts.
 
 
 
-- **In Forward travel step-3**: the laser beam pass to the **end point (col)** without using all of the mirrors from inputs. This define as **alarm raised** and we need move to next process.
+- **In Forward travel step-3**: the laser beam pass to the **end point (col)** from **row 4**. And this define as **alarm raised** and we need move to next process.
 
 <img src="imgs/forward_3.PNG" alt="TharHtetSan-forward3" style="zoom:80%;" />
 
